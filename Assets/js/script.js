@@ -1,21 +1,25 @@
-function initWeather() {
-    // personal API key
-    let APIKey = "6d2634cf057189dfbdc49782f75750f9"
+const cityEl = document.querySelector("#search-city");
+const searchEl = document.getElementById("searchBtn");
+const currentTemp = document.getElementById("temperature");
+const currentHumidity = document.getElementById("humidity");
+const APIKey = "6d2634cf057189dfbdc49782f75750f9"
 
-    // gloabal variables to push data to
-    let searchEl = document.getElementById("searchBtn");
-    let cityEl = $('#search-city').val();
-    // let nameEl = $('')
-    // let weatherPic = $('')
 
-    function currentWeather(cityName) {
-        let requestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
-
-        fetch(requestURL)
+function currentWeather(search) {
+    let requestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + search + "&appid=" + APIKey;
+    console.log(requestURL);
+    fetch(requestURL)
         .then((response) => response.json())
-        // .then((data) => console.log(data));
+        .then((data) => console.log(data));
 
-    searchEl.addEventListener("click", console.log(data));
+
+
 }
+
+function formControl(event) {
+    event.preventDefault();
+    let search = cityEl.value.trim();
+    currentWeather(search);
 }
-initWeather();
+
+searchEl.addEventListener("click", formControl)
