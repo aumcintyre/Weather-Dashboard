@@ -10,9 +10,8 @@ function currentWeather(search) {
     console.log(requestURL);
     fetch(requestURL)
         .then((response) => response.json())
-        .then((data) => console.log(data));
-
-
+        .then((data) => console.log(data))
+//Need to build a function to use the data
 
 }
 
