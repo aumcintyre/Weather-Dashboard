@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <header class="bg-dark text-white p-4 text-center container-fluid">
+    <header class="bg-primary text-white p-4 text-center container-fluid">
         <h1>Weather Dashboard</h1>
     </header>
 
@@ -20,7 +20,12 @@
         <div class="row">
             <!-- City search + local history column -->
             <div class="col-3 bg-dark text-white text-center">
-                <p>Hello!</p>
+                <h2>Enter a city name:</h2>
+                <div class="input-group">
+                    <input class="form-control" placeholder="Enter City">
+                    <button class="btn-dark">
+                        <i class="fas fa-search"></i></button>
+                </div>
             </div>
             <!--This container displays the city the user searched for, the current weather, and the date. Underneath that, the 5 day forcast will be displayed-->
             <div class="col-9 bg-dark text-white text-center">
