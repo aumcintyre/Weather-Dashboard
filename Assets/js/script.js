@@ -5,6 +5,7 @@ const searchEl = document.getElementById("searchBtn");
 const currentTemp = document.getElementById("temperature");
 const currentHumidity = document.getElementById("humidity");
 const currentWind = document.getElementById("wind-speed")
+const currentUV = document.getElementById("UV-index")
 const APIKey = "6d2634cf057189dfbdc49782f75750f9"
 const now = dayjs().toString()
 
@@ -39,15 +40,18 @@ function currentWeather(search) {
                     console.log(data);
                     let UVIndex = document.createElement("span")
 
-                    if (response.data[0].value < 4 ) {
+                    if (data[0].value < 4 ) {
                         UVIndex.setAttribute("class", "badge badge-success");
                     }
-                    else if (response.data[0].value < 8) {
+                    else if (data[0].value < 8) {
                         UVIndex.setAttribute("class", "badge badge-warning");
                     }
                     else {
                         UVIndex.setAttribute("class", "badge badge-danger");
                     }
+                    UVIndex.innerHTML= (data[0].value);
+                    currentUV.innerHTML = "UV Index: ";
+                    currentUV.appendChild(UVIndex);
                 })
 
         });
