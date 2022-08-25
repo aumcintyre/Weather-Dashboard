@@ -31,7 +31,7 @@ function currentWeather(search) {
             let lon = data.coord.lon;
             let UVRequestURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey + "&cnt=1";
 
-
+// Nested function to find UV Index and change background color based on that value
             fetch(UVRequestURL)
                 .then(function (response) {
                     return response.json();
@@ -53,7 +53,20 @@ function currentWeather(search) {
                     currentUV.innerHTML = "UV Index: ";
                     currentUV.appendChild(UVIndex);
                 })
-
+// Nested function 
+                let cityID = data.id;
+                let forecastRequestURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey;
+                fetch(forecastRequestURL)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log(data);
+                    const forecastEl = document.querySelectorAll("#fiveday")
+                    for (i=0; i < forecastEl.length; i++){
+                        forecastEl[i].innerHTML="";
+                    }
+                })
         });
 
 }
