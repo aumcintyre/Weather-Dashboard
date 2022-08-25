@@ -23,7 +23,7 @@ function currentWeather(search) {
             console.log(data);
             nameEl.innerHTML = data.name;
             currentTime.innerHTML = now;
-            currentTemp.innerHTML = "Temperature: " + data.main.temp;
+            currentTemp.innerHTML = "Temperature: " + Math.round(((data.main.temp - 273.15) * 1.8) + 32);
             // currentWind.innerHTML = "Wind Speed: " + data.main.wind.speed + "MPH"; Wind is undefined, but speed doesn't work
             currentHumidity.innerHTML = "Humidity: " + data.main.humidity;
 
@@ -53,7 +53,7 @@ function currentWeather(search) {
                     currentUV.innerHTML = "UV Index: ";
                     currentUV.appendChild(UVIndex);
                 })
-// Nested function 
+// Nested function to pull 5 day data
                 let cityID = data.id;
                 let forecastRequestURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey;
                 fetch(forecastRequestURL)
@@ -65,6 +65,11 @@ function currentWeather(search) {
                     const forecastEl = document.querySelectorAll("#fiveday")
                     for (i=0; i < forecastEl.length; i++){
                         forecastEl[i].innerHTML="";
+                        let forecastIndex = i * 8 + 4;
+                        let forecastTemp = document.createElement("p");
+                        forecastTemp.innerHTML = "Temperature: " + data.list[forecastIndex].main.temp;
+                        forecastEl[i].appendChild(forecastTemp);
+                        let forecastHumidity = document.createElement
                     }
                 })
         });
