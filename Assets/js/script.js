@@ -9,11 +9,23 @@ function currentWeather(search) {
     let requestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + search + "&appid=" + APIKey;
     console.log(requestURL);
     fetch(requestURL)
-        .then((response) => response.json())
-        .then((data) => console.log(data))
+    .then(function (response) {
+        return response.json();
+        })
+        .then(function (data) {
+            // let weatherData = data
+              console.log(data);
+        });
+  
+}
+
+        // let something = data;
+        // console.log(something.main.humidity);
+        // }
+        // currentTemp.innerHTML=(dat.main.temp)
 //Need to build a function to use the data
 
-}
+
 
 function formControl(event) {
     event.preventDefault();
