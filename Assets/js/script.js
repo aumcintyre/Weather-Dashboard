@@ -2,11 +2,14 @@ const cityEl = document.querySelector("#search-city");
 const nameEl = document.getElementById("location-name")
 const currentTime = document.getElementById("today-date")
 const searchEl = document.getElementById("searchBtn");
+const historyEl = document.getElementById("history")
+const currentIcon = document.getElementById("current-icon")
 const currentTemp = document.getElementById("temperature");
 const currentHumidity = document.getElementById("humidity");
 const currentWind = document.getElementById("wind-speed")
 const currentUV = document.getElementById("UV-index")
 const APIKey = "6d2634cf057189dfbdc49782f75750f9"
+let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 const now = dayjs().toString()
 
 console.log(now);
@@ -23,8 +26,11 @@ function currentWeather(search) {
             console.log(data);
             nameEl.innerHTML = data.name;
             currentTime.innerHTML = now;
+            let weatherIcon = data.weather[0].icon;
+            console.log(weatherIcon);
+            let focusImg = currentIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
             currentTemp.innerHTML = "Temperature: " + Math.round(((data.main.temp - 273.15) * 1.8) + 32);
-            // currentWind.innerHTML = "Wind Speed: " + data.main.wind.speed + "MPH"; Wind is undefined, but speed doesn't work
+            currentWind.innerHTML = "Wind Speed: " + data.wind.speed + "MPH";
             currentHumidity.innerHTML = "Humidity: " + data.main.humidity;
 
             let lat = data.coord.lat;
@@ -66,10 +72,20 @@ function currentWeather(search) {
                     for (i=0; i < forecastEl.length; i++){
                         forecastEl[i].innerHTML="";
                         let forecastIndex = i * 8 + 4;
+
+                        let forecastDate = document.createElement("p");
+                        forecastDate.innerHTML = data.list[forecastIndex].dt_txt;
+                        forecastEl[i].appendChild(forecastDate)
+                        let forecastIcon = document.createElement("img");
+                        forecastIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[forecastIndex].weather[0].icon + "@2x.png");
+                        forecastIcon.setAttribute("alt", data.list[forecastIndex].weather[0].description);
+                        forecastEl[i].append(forecastIcon);
                         let forecastTemp = document.createElement("p");
-                        forecastTemp.innerHTML = "Temperature: " + data.list[forecastIndex].main.temp;
+                        forecastTemp.innerHTML = "Temperature: " + Math.round(((data.list[forecastIndex].main.temp - 273.15) * 1.8) + 32);
                         forecastEl[i].appendChild(forecastTemp);
-                        let forecastHumidity = document.createElement
+                        let forecastHumidity = document.createElement("p");
+                        forecastHumidity.innerHTML = "Humidity: " + data.list[forecastIndex].main.humidity;
+                        forecastEl[i].appendChild(forecastHumidity);
                     }
                 })
         });
@@ -90,4 +106,32 @@ function formControl(event) {
     currentWeather(search);
 }
 
-searchEl.addEventListener("click", formControl)
+// searchEl.addEventListener("click", formControl)
+
+searchEl.addEventListener("click", function (){
+    let searchValue = cityEl.value;
+    currentWeather(searchValue);
+    searchHistory.push(searchValue)
+    localStorage.setItem("search", JSON.stringify(searchHistory));
+    displayHistory();
+    formControl()})
+
+function displayHistory() {
+    historyEl.innerHTML = "";
+    for (let i = 0; i < searchHistory.length; i++){
+    const recentCity = document.createElement("input");
+    recentCity.setAttribute("type", "text");
+    recentCity.setAttribute("class", "form-control d-block bg-white");
+    recentCity.setAttribute("value", searchHistory[i]);
+
+    recentCity.addEventListener("click", function(){
+        currentWeather(recentCity.value);
+    })
+    historyEl.append(recentCity)
+}
+}
+
+displayHistory();
+if (searchHistory.length > 0){
+    currentWeather(searchHistory[searchHistory.length-1]);
+}
